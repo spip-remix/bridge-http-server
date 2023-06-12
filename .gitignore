@@ -1,0 +1,5 @@
+/vendor/
+/.phpunit.cache/
+/phpunit.xml
+/phpstan.neon
+/.php-cs-fixer.cache
