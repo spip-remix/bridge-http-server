@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use Spip\Component\Http\RequestHandler;
+use Spip\Component\Http\ResponseFactory;
+use Spip\Component\Http\ServerRequestFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$handler = new RequestHandler(new ResponseFactory);
+
+$f = new ServerRequestFactory;
+$request = $f->createServerRequest('GET', '/spip.php?page=sommaire');
+$firstResponse = $handler->handle($request);
+
+echo $request->getMethod().' '.$request->getProtocolVersion().' '.$request->getUri().PHP_EOL;
+echo PHP_EOL;
+echo $firstResponse->getBody()->getContents().PHP_EOL;
+exit(0);

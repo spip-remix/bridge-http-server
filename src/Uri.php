@@ -26,5 +26,8 @@ class Uri implements UriInterface
     public function withPath(string $path): UriInterface { return $this; }
     public function withQuery(string $query): UriInterface { return $this; }
     public function withFragment(string $fragment): UriInterface { return $this; }
-    public function __toString(): string {return ''; }
+    public function __toString(): string
+    {
+        return $this->uri;
+    }
 }

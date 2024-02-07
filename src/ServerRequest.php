@@ -3,11 +3,21 @@
 namespace Spip\Component\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 
 class ServerRequest extends Request implements ServerRequestInterface
 {
+    private array $serverParams = [];
+
     private array $attributes = [];
-    public function getServerParams(): array { return []; }
+
+    public function __construct(string $method, UriInterface $uri, array $serverParams = [])
+    {
+        $this->serverParams = $serverParams;
+        parent::__construct($method, $uri);
+    }
+
+    public function getServerParams(): array { return $this->serverParams; }
     public function getCookieParams(): array { return []; }
     public function withCookieParams(array $cookies): ServerRequestInterface { return $this; }
     public function getQueryParams(): array { return []; }

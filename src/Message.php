@@ -8,8 +8,20 @@ use Psr\Http\Message\StreamInterface;
 class Message implements MessageInterface
 {
     private StreamInterface $body;
-    public function getProtocolVersion(): string { return ''; }
-    public function withProtocolVersion(string $version): MessageInterface { return $this; }
+    private string $protocolVersion;
+
+    public function getProtocolVersion(): string
+    {
+        return 'HTTP/'.$this->protocolVersion;
+    }
+
+    public function withProtocolVersion(string $version): MessageInterface
+    {
+        $this->protocolVersion = $version;
+
+        return $this;
+    }
+
     public function getHeaders(): array { return []; }
     public function hasHeader(string $name): bool { return false; }
     public function getHeader(string $name): array { return []; }

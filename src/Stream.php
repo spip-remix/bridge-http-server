@@ -7,7 +7,7 @@ use Psr\Http\Message\StreamInterface;
 class Stream implements StreamInterface
 {
     public function __construct(
-        private ?string $contents = null,
+        private string $contents = '',
     ) {
     }
 
@@ -24,6 +24,6 @@ class Stream implements StreamInterface
     public function write(string $string): int { return 0; }
     public function isReadable(): bool { return false; }
     public function read(int $length): string { return ''; }
-    public function getContents(): string { return ''; }
+    public function getContents(): string { return $this->contents; }
     public function getMetadata(?string $key = null) { return null; }
 }

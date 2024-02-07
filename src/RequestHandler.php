@@ -8,8 +8,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RequestHandler implements RequestHandlerInterface
 {
+    public function __construct(
+        private ResponseFactory $factory,
+    ) {
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return (new Response)->withStatus(200)->withBody(new Stream('C\'est la fin du chemin.'));
+        $response = $this->factory->createResponse();
+        return $response->withBody(new Stream('C\'est la fin du chemin.'));
     }
 }
