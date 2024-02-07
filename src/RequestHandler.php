@@ -15,7 +15,12 @@ class RequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        dump('handling HTTP Handler '.__CLASS__);
+        $contents = 'C\'est la fin du chemin.';
+        $complement = $request->getAttribute('espace_prive', false);
+        $contents = ($complement ? 'Espace privé de SPIP' . PHP_EOL : '') . $contents;
+
         $response = $this->factory->createResponse();
-        return $response->withBody(new Stream('C\'est la fin du chemin.'));
+        return $response->withBody(new Stream($contents));
     }
 }

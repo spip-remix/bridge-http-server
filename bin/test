@@ -1,19 +1,24 @@
 #!/usr/bin/env php
 <?php
 
-use Spip\Component\Http\RequestHandler;
 use Spip\Component\Http\ResponseFactory;
 use Spip\Component\Http\ServerRequestFactory;
+use Spip\Component\Http\Psr15SpipMiddleware;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$handler = new RequestHandler(new ResponseFactory);
-
 $f = new ServerRequestFactory;
+// $request = $f->createServerRequest('GET', '/spip.php?exec=accueil&page=sommaire');
 $request = $f->createServerRequest('GET', '/spip.php?page=sommaire');
-$firstResponse = $handler->handle($request);
+$spipMiddleware = new Psr15SpipMiddleware(new ResponseFactory);
+$response = $spipMiddleware->handle($request);
 
 echo $request->getMethod().' '.$request->getProtocolVersion().' '.$request->getUri().PHP_EOL;
+echo 'Status: ' . $response->getStatusCode() . PHP_EOL;
+echo 'Attributes:' . PHP_EOL;
+foreach ($request->getAttributes() as $key => $value) {
+    echo sprintf('  Key:%s, Value:%s', \str_pad($key, 6), $value) . PHP_EOL;
+}
 echo PHP_EOL;
-echo $firstResponse->getBody()->getContents().PHP_EOL;
+echo 'SpipMiddleware: "' . $response->getBody()->getContents() . '"' . PHP_EOL;
 exit(0);
