@@ -6,13 +6,16 @@ use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface
 {
+    private string $path;
+
     private string $query;
 
     public function __construct(
         private string $uri = '',
     ) {
         $parsed = parse_url($uri);
-        $this->query = $parsed['query'];
+        $this->path = $parsed['path'] ?? '/';
+        $this->query = $parsed['query'] ?? '';
     }
 
     public function getScheme(): string { return ''; }
@@ -20,7 +23,11 @@ class Uri implements UriInterface
     public function getUserInfo(): string { return '';  }
     public function getHost(): string { return ''; }
     public function getPort(): ?int { return null; }
-    public function getPath(): string { return ''; }
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
     public function getQuery(): string
     {
         return $this->query;
@@ -31,7 +38,13 @@ class Uri implements UriInterface
     public function withUserInfo(string $user, ?string $password = null): UriInterface { return $this; }
     public function withHost(string $host): UriInterface { return $this; }
     public function withPort(?int $port): UriInterface { return $this; }
-    public function withPath(string $path): UriInterface { return $this; }
+    public function withPath(string $path): UriInterface
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
     public function withQuery(string $query): UriInterface
     {
         $this->query = $query;

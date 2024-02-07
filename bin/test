@@ -1,24 +1,58 @@
 #!/usr/bin/env php
 <?php
 
+use Spip\Component\Http\ActionMiddleware;
+use Spip\Component\Http\EspacePriveMiddleware;
+use Spip\Component\Http\EspacePublicMiddleware;
+use Spip\Component\Http\HttpPipeline;
+use Spip\Component\Http\HttpPreRouter;
 use Spip\Component\Http\ResponseFactory;
 use Spip\Component\Http\ServerRequestFactory;
-use Spip\Component\Http\Psr15SpipMiddleware;
+use Spip\Component\Http\SpipFrameworkHandler;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$f = new ServerRequestFactory;
-// $request = $f->createServerRequest('GET', '/spip.php?exec=accueil&page=sommaire');
-$request = $f->createServerRequest('GET', '/spip.php?page=sommaire');
-$spipMiddleware = new Psr15SpipMiddleware(new ResponseFactory);
-$response = $spipMiddleware->handle($request);
+$spipHandler = new SpipFrameworkHandler(new ResponseFactory);
+$middlewares = [
+    new HttpPreRouter,
+    new ActionMiddleware,
+    new EspacePriveMiddleware,
+    new EspacePublicMiddleware,
+];
 
-echo $request->getMethod().' '.$request->getProtocolVersion().' '.$request->getUri().PHP_EOL;
-echo 'Status: ' . $response->getStatusCode() . PHP_EOL;
-echo 'Attributes:' . PHP_EOL;
-foreach ($request->getAttributes() as $key => $value) {
-    echo sprintf('  Key:%s, Value:%s', \str_pad($key, 6), $value) . PHP_EOL;
+$requests = [
+    'stats_spip' => 'https://contrib.spip.net/stats.api/spip/4.2',
+    'stats_spip' => 'https://contrib.spip.net/stats.api/spip/4.2?args=plugin/agenda/4.5',
+    'site_lamba' => 'https://univers.spip.net/sous-doss/spip.php/spip',
+    'site_lamba2' => 'https://univers.spip.net/sous-doss/spip.php?/spip',
+    'site_lamba3' => 'https://univers.spip.net/sous-doss/spip.php/spip?spip.php',
+    'site_public_page_article_1' => '/spip.php?page=article&id_article=1',
+    'site_public_page_plan' => '/spip.php?page=plan',
+    'site_public_page_default' => '/',
+    'espace_prive_page_upgrade' => '/spip.php?exec=upgrade&reinstall=oui',
+    'espace_prive_page_upgrade_legacy' => '/ecrire/?exec=upgrade&reinstall=oui',
+    'espace_prive_page_default' => '/?action=exec',
+    'espace_prive_page_default_legacy' => '/ecrire',
+    'action_api_stats' => '/spip.php?action=api_stats&args=spip/4.2',
+];
+$srf = new ServerRequestFactory;
+
+foreach ($requests as $key => $value) {
+    $request = $srf->createServerRequest('GET', $value);
+    $pipeline = new HttpPipeline(...$middlewares);
+    $response = $pipeline->process($request, $spipHandler);
+
+    echo '>> Requête: ' . $key . PHP_EOL;
+
+    echo $request->getMethod().' '.$request->getProtocolVersion().' '.$request->getUri().PHP_EOL;
+    echo 'Status: ' . $response->getStatusCode() . PHP_EOL;
+    echo 'Attributes:' . PHP_EOL;
+    foreach ($request->getAttributes() as $key => $value) {
+        echo sprintf('  Key:%s, Value:%s', \str_pad($key, 12), is_bool($value) ? ($value ? 'oui' : 'non') : $value) . PHP_EOL;
+    }
+    echo PHP_EOL;
+    echo 'Content: "' . $response->getBody()->getContents() . '"' . PHP_EOL;
+    echo PHP_EOL;
 }
-echo PHP_EOL;
-echo 'SpipMiddleware: "' . $response->getBody()->getContents() . '"' . PHP_EOL;
+
 exit(0);
