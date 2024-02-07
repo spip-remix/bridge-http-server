@@ -2,12 +2,13 @@
 
 namespace Spip\Component\Http;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Spip\Component\Pipeline\AbstractRule;
 
-class ActionMiddleware extends AbstractRule implements MiddlewareInterface
+class ActionMiddleware extends AbstractRule implements HttpMiddlewareInterface
 {
     public function when($request): bool
     {
@@ -23,12 +24,12 @@ class ActionMiddleware extends AbstractRule implements MiddlewareInterface
     public function then($request): mixed
     {
         /** @var ServerRequestInterface $request */
-        $request
+        $request = $request
             ->withAttribute('action', $request->getQueryParams()['action'])
             ->withAttribute('args', $request->getQueryParams()['args'] ?? '')
         ;
 
-        return (new SpipFrameworkHandler(new ResponseFactory))->handle($request);
+        return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
     }
     
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

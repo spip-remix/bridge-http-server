@@ -6,11 +6,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class EspacePublicMiddleware implements MiddlewareInterface
+class EspacePublicMiddleware implements HttpMiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request
+        $request = $request
             ->withAttribute('action', 'page')
             ->withAttribute('page', $request->getQueryParams()['page'] ?? 'sommaire')
             ->withoutAttribute('exec')

@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Spip\Component\Pipeline\AbstractRule;
 
-class HttpPreRouter extends AbstractRule implements MiddlewareInterface
+class HttpPreRouter extends AbstractRule implements HttpMiddlewareInterface
 {
     private bool $changeExec = false;
 
@@ -58,12 +58,11 @@ class HttpPreRouter extends AbstractRule implements MiddlewareInterface
             $queryParams['action'] = $this->actionValue;
             $queryParams['args'] = $queryParams['args'] ?? $this->actionParams;
         }
-        $request->withQueryParams($queryParams);
         $this->changeExec = false;
         $this->changePage = false;
         $this->changeAction = false;
 
-        return $request;
+        return $request->withQueryParams($queryParams);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -6,15 +6,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class HttpPipeline implements RequestHandlerInterface, MiddlewareInterface
+class HttpPipeline implements RequestHandlerInterface, HttpMiddlewareInterface
 {
     private RequestHandlerInterface $final;
 
-    /** @var MiddlewareInterface[] */
+    /** @var HttpMiddlewareInterface[] */
     private array $middlewares;
 
     public function __construct(
-        MiddlewareInterface ...$middlewares,
+        HttpMiddlewareInterface ...$middlewares,
     ) {
         $this->middlewares = $middlewares;
     }

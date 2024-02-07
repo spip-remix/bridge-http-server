@@ -2,23 +2,24 @@
 
 namespace Spip\Component\Http;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class EspacePriveMiddleware implements MiddlewareInterface
+class EspacePriveMiddleware implements HttpMiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (\array_key_exists('exec', $request->getQueryParams())) {
-            $request
+            $request = $request
                 ->withAttribute('action', 'exec')
                 ->withAttribute('exec', $request->getQueryParams()['exec'] ?? 'accueil')
                 ->withAttribute('espace_prive', true)
                 ->withoutAttribute('args')
             ;
 
-            return (new SpipFrameworkHandler(new ResponseFactory))->handle($request);
+            return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
         }
 
         return $handler->handle($request);
