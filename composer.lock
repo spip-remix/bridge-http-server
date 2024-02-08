@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "030bd80e4d0062d95a603dd284fe2438",
+    "content-hash": "70156312e1d12546ee2dd52d9f7dabe3",
     "packages": [
         {
             "name": "league/pipeline",
@@ -482,12 +482,12 @@
             "time": "2023-04-11T06:14:47+00:00"
         },
         {
-            "name": "spip/pipeline",
+            "name": "spip/bridge-pipeline",
             "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "/Users/klike/Sites/JamesRezo/spip/pipeline",
-                "reference": "fd03458cf3a12f8b68bb4391401f70cb268cc93c"
+                "reference": "c6498a33a705dad83c5639dfb6c190c7c4b7b88c"
             },
             "require": {
                 "league/pipeline": "^1.0",
@@ -508,12 +508,12 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Spip\\Component\\Pipeline\\": "src/"
+                    "Spip\\Bridge\\Pipeline\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Spip\\Component\\Pipeline\\Test\\": "tests/"
+                    "Spip\\Bridge\\Pipeline\\Test\\": "tests/"
                 },
                 "files": [
                     "tests/Fixtures/functions.php"
@@ -529,7 +529,14 @@
                 }
             ],
             "description": "a pipeline pattern implementation.",
-            "time": "2024-02-07T00:36:15+00:00"
+            "keywords": [
+                "composition",
+                "design pattern",
+                "pattern",
+                "pipeline",
+                "sequential"
+            ],
+            "time": "2024-02-08T14:42:33+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2763,7 +2770,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "spip/pipeline": 20
+        "spip/bridge-pipeline": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
