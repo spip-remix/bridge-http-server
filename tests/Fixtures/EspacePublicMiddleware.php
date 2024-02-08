@@ -1,10 +1,11 @@
 <?php
 
-namespace Spip\Component\Http;
+namespace Spip\Component\Http\Test\Fixtures;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Spip\Component\Http\HttpMiddlewareInterface;
 
 class EspacePublicMiddleware implements HttpMiddlewareInterface
 {

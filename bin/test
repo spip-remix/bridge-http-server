@@ -3,12 +3,12 @@
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 // use Nyholm\Psr7Server\ServerRequestCreator;
-use Spip\Component\Http\ActionMiddleware;
-use Spip\Component\Http\EspacePriveMiddleware;
-use Spip\Component\Http\EspacePublicMiddleware;
+use Spip\Component\Http\Test\Fixtures\ActionMiddleware;
+use Spip\Component\Http\Test\Fixtures\EspacePriveMiddleware;
+use Spip\Component\Http\Test\Fixtures\EspacePublicMiddleware;
 use Spip\Component\Http\HttpPipeline;
-use Spip\Component\Http\HttpPreRouter;
-use Spip\Component\Http\SpipFrameworkHandler;
+use Spip\Component\Http\Test\Fixtures\HttpPreRouter;
+use Spip\Component\Http\Test\Fixtures\SpipFrameworkHandler;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

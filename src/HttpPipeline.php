@@ -38,6 +38,9 @@ class HttpPipeline implements RequestHandlerInterface, HttpMiddlewareInterface
         return $this->handle($request);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __invoke($payload, ?callable $next = null): mixed
     {
     }

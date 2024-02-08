@@ -1,11 +1,12 @@
 <?php
 
-namespace Spip\Component\Http;
+namespace Spip\Component\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Spip\Component\Http\HttpMiddlewareInterface;
 use Spip\Component\Pipeline\AbstractRule;
 
 class ActionMiddleware extends AbstractRule implements HttpMiddlewareInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Component\Http;
+namespace Spip\Component\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestInterface;
