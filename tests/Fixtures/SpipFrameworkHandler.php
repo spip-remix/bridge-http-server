@@ -16,28 +16,18 @@ class SpipFrameworkHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $contents = 'C\'est la fin du chemin.';
-
-        $attributes = 'Attributes:' . PHP_EOL;
-        foreach ($request->getAttributes() as $key => $value) {
-            $attributes .= sprintf('Key:%s,Value:%s', $key, is_bool($value) ? ($value ? 'oui' : 'non') : $value) . PHP_EOL;
-        }
-        $attributes .= PHP_EOL;
-
-        $extraParameters = \array_diff($request->getQueryParams(), $request->getAttributes());
-        $parameters = '';
-        foreach ($extraParameters as $key => $value) {
-            $parameters .= 'Extra:' . $key . ',Value:' . $value . PHP_EOL;
-        }
-        if ($parameters) {
-            $parameters = PHP_EOL . 'Extra Parameters' . PHP_EOL . $parameters . \PHP_EOL;
-        }
-
+        $page = 'C\'est la fin du chemin.';
         $restricted = $request->getAttribute('espace_prive', false);
+        $page = ($restricted ? 'Espace privé de SPIP: ' : '') . $page;
 
-        $contents = ($restricted ? 'Espace privé de SPIP' . PHP_EOL : '') . $attributes . $parameters . $contents;
+        $infos = [
+            'attributes' => $request->getAttributes(),
+            'extras' => \array_diff($request->getQueryParams(), $request->getAttributes()),
+            'page' => $page,
+        ];
+
         $response = $this->factory->createResponse();
-        $stream = $this->factory->createStream($contents);
+        $stream = $this->factory->createStream(\json_encode($infos));
 
         return $response->withBody($stream);
     }

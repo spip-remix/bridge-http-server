@@ -5,39 +5,33 @@ namespace Spip\Bridge\Http\Test\Fixtures;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Bridge\Http\HttpMiddlewareInterface;
-use Spip\Bridge\Pipeline\AbstractRule;
+use Spip\Bridge\Http\AbstractMiddleware;
 
-class ActionMiddleware extends AbstractRule implements HttpMiddlewareInterface
+class ActionMiddleware extends AbstractMiddleware
 {
+    private string $actionName = '';
+
+    private string $actionArgs = '';
+
     public function when($request): bool
     {
-        $action = '';
-        /** @var ServerRequestInterface $request */
-        if (array_key_exists('action', $request->getQueryParams())) {
-            $action = $request->getQueryParams()['action'];
+        $this->actionName = $request->getQueryParams()['action'] ?? '';
+        $this->actionArgs = $request->getQueryParams()['args'] ?? '';
+        $path = rtrim(preg_replace(',(spip|index).php$,', '', $request->getUri()->getPath()), '/') . '/';
+        if ((bool) preg_match(',^/(\w+)\.api/?(.*)/$,', $path, $matches)) {
+            $this->actionName = 'api_' . $matches[1];
+            $this->actionArgs = $matches[2];
         }
 
-        return !in_array($action, ['', 'page', 'exec']);
+        return !in_array($this->actionName, ['', 'page', 'exec']);
     }
 
-    public function then($request): mixed
+    public function then($request): ServerRequestInterface|ResponseInterface
     {
-        /** @var ServerRequestInterface $request */
         $request = $request
-            ->withAttribute('action', $request->getQueryParams()['action'])
-            ->withAttribute('args', $request->getQueryParams()['args'] ?? '');
+            ->withAttribute('action', $this->actionName)
+            ->withAttribute('args', $this->actionArgs);
 
         return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
-    }
-
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        if ($this->when($request)) {
-            return $this->then($request);
-        }
-
-        return $handler->handle($request);
     }
 }

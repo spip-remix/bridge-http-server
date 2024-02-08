@@ -6,14 +6,15 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Spip\Bridge\Http\AbstractMiddleware;
 use Spip\Bridge\Http\HttpPipeline;
 use Spip\Bridge\Http\Test\Fixtures\ActionMiddleware;
 use Spip\Bridge\Http\Test\Fixtures\EspacePriveMiddleware;
 use Spip\Bridge\Http\Test\Fixtures\EspacePublicMiddleware;
-use Spip\Bridge\Http\Test\Fixtures\HttpPreRouter;
 use Spip\Bridge\Http\Test\Fixtures\SpipFrameworkHandler;
 
 #[CoversClass(HttpPipeline::class)]
+#[CoversClass(AbstractMiddleware::class)]
 class HttpPipelineTest extends TestCase
 {
     private Psr17Factory $factory;
@@ -23,7 +24,6 @@ class HttpPipelineTest extends TestCase
     protected function setUp(): void
     {
         $middlewares = [
-            new HttpPreRouter,
             new ActionMiddleware,
             new EspacePriveMiddleware,
             new EspacePublicMiddleware,
@@ -38,20 +38,24 @@ class HttpPipelineTest extends TestCase
     {
         return [
             'site_public_page_default' => [
-                'expected' => [200, 'page', 'sommaire', false, []],
+                'expected' => [200, ['action' => 'page', 'page' => 'sommaire'], false, []],
                 'uri' => '/',
             ],
             'espace_prive_page_default' => [
-                'expected' => [200, 'exec', 'accueil', true, []],
+                'expected' => [200, ['action' => 'exec', 'exec' => 'accueil', 'espace_prive' => true], true, []],
                 'uri' => '/ecrire',
             ],
             'espace_prive_page_upgrade_legacy' => [
-                'expected' => [200, 'exec', 'upgrade', true, ['reinstall' => 'oui']],
+                'expected' => [200, ['action' => 'exec', 'exec' => 'upgrade', 'espace_prive' => true], true, ['reinstall' => 'oui']],
                 'uri' => '/ecrire/?exec=upgrade&reinstall=oui',
             ],
             'stats_spip' => [
-                'expected' => [200, 'action', 'api_stats', false, []],
-                'uri' => '/stats.api/spip/4.2',
+                'expected' => [200, ['action' => 'api_stats', 'args' => 'spip/4.2'], false, []],
+                'uri' => '/?action=api_stats&args=spip/4.2',
+            ],
+            'stats_spip_rewrite' => [
+                'expected' => [200, ['action' => 'api_stats', 'args' => 'plugin/prefix/1.0.0'], false, []],
+                'uri' => '/stats.api/plugin/prefix/1.0.0',
             ],
         ];
     }
@@ -64,26 +68,14 @@ class HttpPipelineTest extends TestCase
 
         // When
         $actual = $this->pipeline->process($request, $this->final);
-        $actualContent = $actual->getBody()->getContents();
+        $actualContent = \json_decode($actual->getBody()->getContents(), \true);
+        // dump('actualContent', $actualContent);
 
         // Then
         $this->assertEquals($expected[0], $actual->getStatusCode());
-        $this->assertStringContainsString(
-            'Key:action,Value:' . $expected[1],
-            $actualContent
-        );
-        $key = $expected[3] ? 'exec' : 'page';
-        $this->assertStringContainsString(
-            'Key:' . $key . ',Value:' . $expected[2],
-            $actualContent
-        );
-        $this->assertEquals($expected[3], \str_contains($actualContent, 'Espace privé de SPIP'));
-        foreach ($expected[4] as $extra => $value) {
-            $this->assertStringContainsString(
-                'Extra:' . $extra . ',Value:' . $value,
-                $actualContent
-            );
-        }
+        $this->assertEquals($expected[1], $actualContent['attributes']);
+        $this->assertEquals($expected[2], \str_contains($actualContent['page'], 'Espace privé de SPIP'));
+        $this->assertEquals($expected[3], $actualContent['extras']);
     }
 
     public function testHandle(): void
@@ -94,6 +86,6 @@ class HttpPipelineTest extends TestCase
         $this->expectExceptionMessage('No final handler available');
 
         // When
-        $this->pipeline->handle($request);
+        (new HttpPipeline)->handle($request);
     }
 }

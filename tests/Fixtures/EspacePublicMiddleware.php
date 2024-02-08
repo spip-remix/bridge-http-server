@@ -4,23 +4,21 @@ namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Bridge\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\AbstractMiddleware;
 
-class EspacePublicMiddleware implements HttpMiddlewareInterface
+class EspacePublicMiddleware extends AbstractMiddleware
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function when($request): bool
     {
-        $request = $request
+        return true;
+    }
+
+    public function then($request): ServerRequestInterface|ResponseInterface
+    {
+        return $request
             ->withAttribute('action', 'page')
             ->withAttribute('page', $request->getQueryParams()['page'] ?? 'sommaire')
             ->withoutAttribute('exec')
             ->withoutAttribute('args');
-
-        return $handler->handle($request);
-    }
-
-    public function __invoke($payload, ?callable $next = null): mixed
-    {
     }
 }

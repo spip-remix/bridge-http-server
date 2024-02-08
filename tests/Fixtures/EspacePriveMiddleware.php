@@ -5,27 +5,25 @@ namespace Spip\Bridge\Http\Test\Fixtures;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Bridge\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\AbstractMiddleware;
 
-class EspacePriveMiddleware implements HttpMiddlewareInterface
+class EspacePriveMiddleware extends AbstractMiddleware
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function when($request): bool
     {
-        if (\array_key_exists('exec', $request->getQueryParams())) {
-            $request = $request
-                ->withAttribute('action', 'exec')
-                ->withAttribute('exec', $request->getQueryParams()['exec'] ?? 'accueil')
-                ->withAttribute('espace_prive', true)
-                ->withoutAttribute('args');
-
-            return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
-        }
-
-        return $handler->handle($request);
+        $path = rtrim(preg_replace(',(spip|index).php$,', '', $request->getUri()->getPath()), '/') . '/';
+        return ((bool) \preg_match(',/ecrire/$,', $path)) ||
+            \array_key_exists('exec', $request->getQueryParams());
     }
 
-    public function __invoke($payload, ?callable $next = null): mixed
+    public function then($request): ServerRequestInterface|ResponseInterface
     {
+        $request = $request
+            ->withAttribute('action', 'exec')
+            ->withAttribute('exec', $request->getQueryParams()['exec'] ?? 'accueil')
+            ->withAttribute('espace_prive', true)
+            ->withoutAttribute('args');
+
+        return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
     }
 }

@@ -8,7 +8,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class HttpPipeline implements RequestHandlerInterface, HttpMiddlewareInterface
 {
-    private RequestHandlerInterface $final;
+    private ?RequestHandlerInterface $final = null;
 
     /** @var HttpMiddlewareInterface[] */
     private array $middlewares;
@@ -22,7 +22,7 @@ class HttpPipeline implements RequestHandlerInterface, HttpMiddlewareInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (empty($this->middlewares)) {
-            if (!isset($this->final)) {
+            if (\is_null($this->final)) {
                 throw new \RuntimeException('No final handler available');
             }
             return $this->final->handle($request);
@@ -38,10 +38,10 @@ class HttpPipeline implements RequestHandlerInterface, HttpMiddlewareInterface
         return $this->handle($request);
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function __invoke($payload, ?callable $next = null): mixed
     {
+        /** @var ServerRequestInterface $request */
+        /** @var RequestHandlerInterface $handler */
+        return $this->process($request, $handler);
     }
 }
