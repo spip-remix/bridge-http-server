@@ -1,11 +1,11 @@
 <?php
 
-namespace Spip\Component\Http\Test\Fixtures;
+namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Component\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\HttpMiddlewareInterface;
 
 class EspacePublicMiddleware implements HttpMiddlewareInterface
 {
@@ -15,8 +15,7 @@ class EspacePublicMiddleware implements HttpMiddlewareInterface
             ->withAttribute('action', 'page')
             ->withAttribute('page', $request->getQueryParams()['page'] ?? 'sommaire')
             ->withoutAttribute('exec')
-            ->withoutAttribute('args')
-        ;
+            ->withoutAttribute('args');
 
         return $handler->handle($request);
     }

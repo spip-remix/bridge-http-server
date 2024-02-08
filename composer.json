@@ -1,5 +1,5 @@
 {
-    "name": "spip/http",
+    "name": "spip/bride-http-server",
     "description": "SPIP HTTP Management",
     "license": "MIT",
     "type": "library",
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spip\\Component\\Http\\": "src/"
+            "Spip\\Bridge\\Http\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spip\\Component\\Http\\Test\\": "tests/"
+            "Spip\\Bridge\\Http\\Test\\": "tests/"
         }
     },
     "extra": {
@@ -38,9 +38,9 @@
         }
     },
     "repositories": {
-        "pipeline": {
-            "type": "git",
-            "url": "/Users/klike/Sites/JamesRezo/spip/pipeline"
+        "spip": {
+            "type": "composer",
+            "url": "https://get.spip.net/composer"
         }
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Spip\Component\Http\Test\Fixtures;
+namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Component\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\HttpMiddlewareInterface;
 use Spip\Bridge\Pipeline\AbstractRule;
 
 class HttpPreRouter extends AbstractRule implements HttpMiddlewareInterface
@@ -24,7 +24,7 @@ class HttpPreRouter extends AbstractRule implements HttpMiddlewareInterface
     {
         /** @var ServerRequestInterface $request */
         $path = rtrim(preg_replace(',(spip|index).php$,', '', $request->getUri()->getPath()), '/') . '/';
-        if ((bool) \preg_match(',/ecrire/$,', $path))   {
+        if ((bool) \preg_match(',/ecrire/$,', $path)) {
             $this->changeExec = true;
         } elseif ((bool) preg_match(',^/(\w+)\.api/?(.*)/$,', $path, $matches)) {
             $this->changeAction = true;

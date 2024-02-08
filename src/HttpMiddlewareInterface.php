@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Component\Http;
+namespace Spip\Bridge\Http;
 
 use Psr\Http\Server\MiddlewareInterface as PsrMiddlewareInterface;
 use Spip\Bridge\Pipeline\MiddlewareInterface as PipelineMiddlewareInterface;

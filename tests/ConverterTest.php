@@ -1,12 +1,12 @@
 <?php
 
-namespace Spip\Component\Http\Test;
+namespace Spip\Bridge\Http\Test;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Spip\Component\Http\Converter;
+use Spip\Bridge\Http\Converter;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 

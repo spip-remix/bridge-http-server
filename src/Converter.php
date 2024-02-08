@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Component\Http;
+namespace Spip\Bridge\Http;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
@@ -44,7 +44,7 @@ class Converter
     {
         return $this->httpFoundationFactory->createRequest($request);
     }
-    
+
     public function fromPsrResponse(ResponseInterface $response): Response
     {
         return $this->httpFoundationFactory->createResponse($response);

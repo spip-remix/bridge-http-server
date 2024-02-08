@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Component\Http\Test\Fixtures;
+namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,7 +27,7 @@ class SpipFrameworkHandler implements RequestHandlerInterface
         $extraParameters = \array_diff($request->getQueryParams(), $request->getAttributes());
         $parameters = '';
         foreach ($extraParameters as $key => $value) {
-            $parameters .= 'Extra:' . $key . ',Value:'. $value . PHP_EOL;
+            $parameters .= 'Extra:' . $key . ',Value:' . $value . PHP_EOL;
         }
         if ($parameters) {
             $parameters = PHP_EOL . 'Extra Parameters' . PHP_EOL . $parameters . \PHP_EOL;

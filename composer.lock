@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70156312e1d12546ee2dd52d9f7dabe3",
+    "content-hash": "35cbea354133efe631f36190a2aa5e3a",
     "packages": [
         {
             "name": "league/pipeline",
@@ -486,8 +486,14 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "/Users/klike/Sites/JamesRezo/spip/pipeline",
-                "reference": "c6498a33a705dad83c5639dfb6c190c7c4b7b88c"
+                "url": "https://git.spip.net/JamesRezo/brige-pipeline.git",
+                "reference": "ca582c9bf3617305d3c44293a898aa80c64f151b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://get.spip.net/composer/dist/spip/bridge-pipeline/spip-bridge-pipeline-dev-main-dbb87f.zip",
+                "reference": "ca582c9bf3617305d3c44293a898aa80c64f151b",
+                "shasum": "8bae43dd1ec17fc504ed821952c80a49fc8cb722"
             },
             "require": {
                 "league/pipeline": "^1.0",
@@ -532,11 +538,15 @@
             "keywords": [
                 "composition",
                 "design pattern",
+                "middleware",
                 "pattern",
                 "pipeline",
                 "sequential"
             ],
-            "time": "2024-02-08T14:42:33+00:00"
+            "support": {
+                "issues": "https://git.spip.net/spip/bridge-pipeliine/issues"
+            },
+            "time": "2024-02-08T16:39:42+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

@@ -1,12 +1,12 @@
 <?php
 
-namespace Spip\Component\Http\Test\Fixtures;
+namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Component\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\HttpMiddlewareInterface;
 use Spip\Bridge\Pipeline\AbstractRule;
 
 class ActionMiddleware extends AbstractRule implements HttpMiddlewareInterface
@@ -21,18 +21,17 @@ class ActionMiddleware extends AbstractRule implements HttpMiddlewareInterface
 
         return !in_array($action, ['', 'page', 'exec']);
     }
-    
+
     public function then($request): mixed
     {
         /** @var ServerRequestInterface $request */
         $request = $request
             ->withAttribute('action', $request->getQueryParams()['action'])
-            ->withAttribute('args', $request->getQueryParams()['args'] ?? '')
-        ;
+            ->withAttribute('args', $request->getQueryParams()['args'] ?? '');
 
         return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
     }
-    
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->when($request)) {

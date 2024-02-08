@@ -1,17 +1,17 @@
 <?php
 
-namespace Spip\Component\Http\Test;
+namespace Spip\Bridge\Http\Test;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Spip\Component\Http\HttpPipeline;
-use Spip\Component\Http\Test\Fixtures\ActionMiddleware;
-use Spip\Component\Http\Test\Fixtures\EspacePriveMiddleware;
-use Spip\Component\Http\Test\Fixtures\EspacePublicMiddleware;
-use Spip\Component\Http\Test\Fixtures\HttpPreRouter;
-use Spip\Component\Http\Test\Fixtures\SpipFrameworkHandler;
+use Spip\Bridge\Http\HttpPipeline;
+use Spip\Bridge\Http\Test\Fixtures\ActionMiddleware;
+use Spip\Bridge\Http\Test\Fixtures\EspacePriveMiddleware;
+use Spip\Bridge\Http\Test\Fixtures\EspacePublicMiddleware;
+use Spip\Bridge\Http\Test\Fixtures\HttpPreRouter;
+use Spip\Bridge\Http\Test\Fixtures\SpipFrameworkHandler;
 
 #[CoversClass(HttpPipeline::class)]
 class HttpPipelineTest extends TestCase
@@ -30,7 +30,7 @@ class HttpPipelineTest extends TestCase
         ];
         $this->factory = new Psr17Factory;
         $this->final = new SpipFrameworkHandler($this->factory);
-        
+
         $this->pipeline = new HttpPipeline(...$middlewares);
     }
 
@@ -78,11 +78,11 @@ class HttpPipelineTest extends TestCase
             $actualContent
         );
         $this->assertEquals($expected[3], \str_contains($actualContent, 'Espace privé de SPIP'));
-        foreach($expected[4] as $extra => $value) {
+        foreach ($expected[4] as $extra => $value) {
             $this->assertStringContainsString(
                 'Extra:' . $extra . ',Value:' . $value,
                 $actualContent
-            );    
+            );
         }
     }
 
@@ -92,7 +92,7 @@ class HttpPipelineTest extends TestCase
         $request = $this->factory->createServerRequest('GET', '/');
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No final handler available');
-        
+
         // When
         $this->pipeline->handle($request);
     }

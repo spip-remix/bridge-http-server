@@ -1,12 +1,12 @@
 <?php
 
-namespace Spip\Component\Http\Test\Fixtures;
+namespace Spip\Bridge\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spip\Component\Http\HttpMiddlewareInterface;
+use Spip\Bridge\Http\HttpMiddlewareInterface;
 
 class EspacePriveMiddleware implements HttpMiddlewareInterface
 {
@@ -17,8 +17,7 @@ class EspacePriveMiddleware implements HttpMiddlewareInterface
                 ->withAttribute('action', 'exec')
                 ->withAttribute('exec', $request->getQueryParams()['exec'] ?? 'accueil')
                 ->withAttribute('espace_prive', true)
-                ->withoutAttribute('args')
-            ;
+                ->withoutAttribute('args');
 
             return (new SpipFrameworkHandler(new Psr17Factory))->handle($request);
         }
