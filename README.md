@@ -1,9 +1,9 @@
-# spip/http
+# spip-remix/bridge-http-server
 
 ## Installation
 
 ```bash
-composer require spip/http
+composer require spip-remix/bridge-http-server
 ```
 
 ## Rational
@@ -22,3 +22,20 @@ Quand tout les middlewares sont passés sans interruption, HttpPipeline appel un
 
 - HttpPipeline
 - Pour les tests, SpipFrameworkHandler renvoie la réponse par défaut.
+
+## Exemple
+
+- Logger
+- Error
+- SecurityScreen
+  - un truc
+  - un autre truc
+- Ajax
+- PreRouting
+  - action
+  - espace privé
+  - espace public
+  - debug mode (-dev)
+- UserLand
+  - ...
+- Router

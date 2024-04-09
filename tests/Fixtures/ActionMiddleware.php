@@ -1,11 +1,11 @@
 <?php
 
-namespace Spip\Bridge\Http\Test\Fixtures;
+namespace SpipRemix\Bridge\Http\Test\Fixtures;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Spip\Bridge\Http\AbstractMiddleware;
+use SpipRemix\Bridge\Http\AbstractMiddleware;
 
 class ActionMiddleware extends AbstractMiddleware
 {

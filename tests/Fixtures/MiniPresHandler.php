@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class SpipFrameworkHandler implements RequestHandlerInterface
+class MiniPresHandler implements RequestHandlerInterface
 {
     public function __construct(
         private Psr17Factory $factory,
@@ -16,17 +16,14 @@ class SpipFrameworkHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $page = 'C\'est la fin du chemin.';
-        $restricted = $request->getAttribute('espace_prive', false);
-        $page = ($restricted ? 'Espace privé de SPIP: ' : '') . $page;
-
+        $page = 'C\'est ça ! Fais le malin, toi ...';
         $infos = [
             'attributes' => $request->getAttributes(),
             'extras' => \array_diff($request->getQueryParams(), $request->getAttributes()),
             'page' => $page,
         ];
 
-        $response = $this->factory->createResponse();
+        $response = $this->factory->createResponse()->withStatus(403);
         $stream = $this->factory->createStream(\json_encode($infos));
 
         return $response->withBody($stream);

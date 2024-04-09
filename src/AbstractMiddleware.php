@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Bridge\Http;
+namespace SpipRemix\Bridge\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -24,7 +24,7 @@ abstract class AbstractMiddleware extends AbstractRule implements HttpMiddleware
             }
             $request = $then;
         }
-        
+
         return $handler->handle($request);
     }
 

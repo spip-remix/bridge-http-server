@@ -1,5 +1,5 @@
 {
-    "name": "spip/bride-http-server",
+    "name": "spip-remix/bridge-http-server",
     "description": "SPIP HTTP Management",
     "license": "MIT",
     "type": "library",
@@ -10,37 +10,42 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "^6.4",
-        "psr/http-server-middleware": "^1.0",
-        "symfony/psr-http-message-bridge": "^6.4",
-        "spip/bridge-pipeline": "dev-main",
+        "php": ">=8.2",
         "nyholm/psr7": "^1.8",
-        "nyholm/psr7-server": "^1.1"
+        "nyholm/psr7-server": "^1.1",
+        "psr/http-server-middleware": "^1.0",
+        "spip/bridge-pipeline": "dev-main",
+        "symfony/http-foundation": "^7.0",
+        "symfony/psr-http-message-bridge": "^7.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.5",
-        "symfony/var-dumper": "^6.4"
+        "phpunit/phpunit": "^11.0",
+        "symfony/var-dumper": "^7.0"
     },
-    "autoload": {
-        "psr-4": {
-            "Spip\\Bridge\\Http\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Spip\\Bridge\\Http\\Test\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "1.0.x-dev"
-        }
+    "provide": {
+        "league/pipeline-implementation": "1.0.0",
+        "psr/http-server-middleware-implementation": "^1.0"
     },
     "repositories": {
         "spip": {
             "type": "composer",
             "url": "https://get.spip.net/composer"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "SpipRemix\\Bridge\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpipRemix\\Bridge\\Http\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.17"
         }
     }
 }

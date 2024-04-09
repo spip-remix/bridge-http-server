@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Bridge\Http;
+namespace SpipRemix\Bridge\Http;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
@@ -52,7 +52,7 @@ class Converter
 
     public static function fromGlobals(): ServerRequestInterface
     {
-        $factory = new Psr17Factory;
+        $factory = new Psr17Factory();
         $creator = new ServerRequestCreator(
             $factory, // ServerRequestFactory
             $factory, // UriFactory

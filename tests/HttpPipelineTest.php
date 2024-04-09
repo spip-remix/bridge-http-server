@@ -1,17 +1,17 @@
 <?php
 
-namespace Spip\Bridge\Http\Test;
+namespace SpipRemix\Bridge\Http\Test;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Spip\Bridge\Http\AbstractMiddleware;
-use Spip\Bridge\Http\HttpPipeline;
-use Spip\Bridge\Http\Test\Fixtures\ActionMiddleware;
-use Spip\Bridge\Http\Test\Fixtures\EspacePriveMiddleware;
-use Spip\Bridge\Http\Test\Fixtures\EspacePublicMiddleware;
-use Spip\Bridge\Http\Test\Fixtures\SpipFrameworkHandler;
+use SpipRemix\Bridge\Http\AbstractMiddleware;
+use SpipRemix\Bridge\Http\HttpPipeline;
+use SpipRemix\Bridge\Http\Test\Fixtures\ActionMiddleware;
+use SpipRemix\Bridge\Http\Test\Fixtures\EspacePriveMiddleware;
+use SpipRemix\Bridge\Http\Test\Fixtures\EspacePublicMiddleware;
+use SpipRemix\Bridge\Http\Test\Fixtures\SpipFrameworkHandler;
 
 #[CoversClass(HttpPipeline::class)]
 #[CoversClass(AbstractMiddleware::class)]

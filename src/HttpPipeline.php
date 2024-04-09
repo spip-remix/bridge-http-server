@@ -1,6 +1,6 @@
 <?php
 
-namespace Spip\Bridge\Http;
+namespace SpipRemix\Bridge\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
